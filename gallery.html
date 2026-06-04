@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thu vien anh tuong tac - JavaScript</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Tahoma, Arial, sans-serif; background: #f0f2f5; color: #222; }
+    header { background: #1a1a2e; color: white; padding: 16px 24px; }
+    header h1 { font-size: 18px; }
+    header p  { font-size: 12px; color: #aaa; margin-top: 2px; }
+    .container { max-width: 960px; margin: 28px auto; padding: 0 16px; }
+    .preview-wrap { background: white; border-radius: 12px; overflow: hidden; margin-bottom: 24px; border: 1px solid #ddd; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    #image { width: 100%; height: 340px; background: #eee center/cover no-repeat; display: flex; align-items: center; justify-content: center; transition: background-image 0.3s ease; }
+    #image.empty { background-color: #e8e8e8; }
+    .preview-placeholder { text-align: center; color: #999; pointer-events: none; }
+    .preview-placeholder .icon { font-size: 48px; margin-bottom: 8px; }
+    .preview-placeholder p { font-size: 14px; }
+    .preview-info { padding: 14px 20px; border-top: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
+    #text { font-size: 14px; color: #555; font-style: italic; }
+    .gallery-title { font-size: 16px; font-weight: bold; color: #1a1a2e; margin-bottom: 14px; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .thumb { border-radius: 8px; overflow: hidden; border: 3px solid transparent; cursor: pointer; transition: all 0.25s ease; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .thumb:hover { border-color: #FF6600; transform: translateY(-4px); box-shadow: 0 8px 24px rgba(255,102,0,0.2); }
+    .thumb img { width: 100%; height: 120px; object-fit: cover; display: block; }
+    .thumb .thumb-label { padding: 6px 8px; font-size: 11px; font-weight: bold; color: #444; text-align: center; background: #fafafa; border-top: 1px solid #eee; }
+    .console-panel { margin-top: 24px; background: #1e1e2e; border-radius: 8px; overflow: hidden; }
+    .console-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; background: #16213e; }
+    .console-header span { color: #7ec8e3; font-size: 12px; font-family: monospace; }
+    .console-header button { background: none; border: 1px solid #444; color: #aaa; font-size: 11px; padding: 2px 10px; border-radius: 4px; cursor: pointer; }
+    #console-log { padding: 10px 14px; min-height: 60px; max-height: 140px; overflow-y: auto; font-family: monospace; font-size: 12px; color: #a6e3a1; }
+    #console-log .log-line { margin-bottom: 3px; }
+    #console-log .log-line span { color: #89b4fa; }
+    footer { text-align: center; padding: 20px; color: #999; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Thu vien anh tuong tac</h1>
+  <p>Di chuot qua hinh nho de hien thi anh lon | Bai tap JavaScript DOM</p>
+</header>
+
+<div class="container">
+
+  <div class="preview-wrap">
+    <div id="image" class="empty">
+      <div class="preview-placeholder">
+        <div class="icon">🖼️</div>
+        <p>Di chuot qua mot hinh anh ben duoi de hien thi o day.</p>
+      </div>
+    </div>
+    <div class="preview-info">
+      <span>ℹ️</span>
+      <span id="text">Di chuot qua mot hinh anh ben duoi de hien thi o day.</span>
+    </div>
+  </div>
+
+  <div class="gallery-title">🖼 Thu vien anh</div>
+
+  <div class="gallery-grid">
+
+    <div class="thumb" onmouseover="Update(pic1)" onmouseout="restore()">
+      <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=300&h=200&fit=crop" alt="iPhone 15 Pro">
+      <div class="thumb-label">iPhone 15 Pro</div>
+    </div>
+
+    <div class="thumb" onmouseover="Update(pic2)" onmouseout="restore()">
+      <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=300&h=200&fit=crop" alt="Apple Watch">
+      <div class="thumb-label">Apple Watch</div>
+    </div>
+
+    <div class="thumb" onmouseover="Update(pic3)" onmouseout="restore()">
+      <img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=300&h=200&fit=crop" alt="MacBook Air M2">
+      <div class="thumb-label">MacBook Air M2</div>
+    </div>
+
+    <div class="thumb" onmouseover="Update(pic4)" onmouseout="restore()">
+      <img src="https://images.unsplash.com/photo-1588423771073-b8903fead85b?w=300&h=200&fit=crop" alt="AirPods Pro">
+      <div class="thumb-label">AirPods Pro</div>
+    </div>
+
+    <div class="thumb" onmouseover="Update(pic5)" onmouseout="restore()">
+      <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=300&h=200&fit=crop" alt="Samsung S24">
+      <div class="thumb-label">Samsung S24</div>
+    </div>
+
+    <div class="thumb" onmouseover="Update(pic6)" onmouseout="restore()">
+      <img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300&h=200&fit=crop" alt="Sony XM5">
+      <div class="thumb-label">Sony XM5</div>
+    </div>
+
+    <div class="thumb" onmouseover="Update(pic7)" onmouseout="restore()">
+      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop" alt="iPad Pro">
+      <div class="thumb-label">iPad Pro</div>
+    </div>
+
+    <div class="thumb" onmouseover="Update(pic8)" onmouseout="restore()">
+      <img src="https://images.unsplash.com/photo-1611186871525-9818bcecab11?w=300&h=200&fit=crop" alt="MacBook Pro 16">
+      <div class="thumb-label">MacBook Pro 16</div>
+    </div>
+
+  </div>
+
+  <div class="console-panel">
+    <div class="console-header">
+      <span>🖥 console.log output</span>
+      <button onclick="clearLog()">Xoa log</button>
+    </div>
+    <div id="console-log">
+      <div class="log-line" style="color:#888">// Log se hien thi o day khi ban di chuot qua anh...</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Bai tap JavaScript DOM &mdash; Thu vien anh tuong tac</footer>
+
+<script>
+  const pic1 = { source: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=960&h=640&fit=crop", alt: "iPhone 15 Pro Max — Chip A17 Pro, Titanium, Camera 48MP" };
+  const pic2 = { source: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=960&h=640&fit=crop", alt: "Apple Watch Series 9 — Theo doi suc khoe 24/7" };
+  const pic3 = { source: "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=960&h=640&fit=crop", alt: "MacBook Air M2 — Sieu mong nhe, chip M2, pin 18 gio" };
+  const pic4 = { source: "https://images.unsplash.com/photo-1588423771073-b8903fead85b?w=960&h=640&fit=crop", alt: "AirPods Pro — True Wireless, chong on ANC, chong nuoc IPX4" };
+  const pic5 = { source: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=960&h=640&fit=crop", alt: "Samsung Galaxy S24 — Snapdragon 8 Gen 3, Camera 200MP" };
+  const pic6 = { source: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=960&h=640&fit=crop", alt: "Sony WH-1000XM5 — Chong on hang dau, pin 30 gio" };
+  const pic7 = { source: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=960&h=640&fit=crop", alt: "iPad Pro — Man hinh Liquid Retina XDR, chip M2" };
+  const pic8 = { source: "https://images.unsplash.com/photo-1611186871525-9818bcecab11?w=960&h=640&fit=crop", alt: "MacBook Pro 16 — Chip M3 Max, 36GB RAM" };
+
+  function logToScreen(msg) {
+    const logDiv = document.getElementById("console-log");
+    const line = document.createElement("div");
+    line.className = "log-line";
+    line.innerHTML = msg;
+    logDiv.appendChild(line);
+    logDiv.scrollTop = logDiv.scrollHeight;
+  }
+
+  function clearLog() {
+    document.getElementById("console-log").innerHTML =
+      '<div class="log-line" style="color:#888">// Log da duoc xoa.</div>';
+  }
+
+  // Ham UPDATE — chay khi chuot VAO anh
+  function Update(PreviewPic) {
+    console.log("Update() duoc goi!");
+    logToScreen('<span>▶ Update()</span> duoc goi!');
+
+    console.log("source:", PreviewPic.source);
+    console.log("alt:", PreviewPic.alt);
+    logToScreen('<span>  source:</span> ' + PreviewPic.source.substring(0,60) + '...');
+    logToScreen('<span>  alt:</span> "' + PreviewPic.alt + '"');
+
+    document.querySelector("#text").innerHTML = PreviewPic.alt;
+    document.getElementById("image").style.backgroundImage = "url('" + PreviewPic.source + "')";
+    document.getElementById("image").classList.remove("empty");
+
+    const placeholder = document.querySelector(".preview-placeholder");
+    if (placeholder) placeholder.style.display = "none";
+
+    logToScreen('<span>  ✅</span> Cap nhat thanh cong!');
+  }
+
+  // Ham HOAN TAC — chay khi chuot ROI khoi anh
+  function restore() {
+    document.getElementById("image").style.backgroundImage = "url('')";
+    document.getElementById("image").classList.add("empty");
+
+    const placeholder = document.querySelector(".preview-placeholder");
+    if (placeholder) placeholder.style.display = "block";
+
+    document.querySelector("#text").innerHTML =
+      "Di chuot qua mot hinh anh ben duoi de hien thi o day.";
+
+    console.log("restore() — da reset");
+    logToScreen('<span>↩ restore()</span> — da reset ve ban dau');
+  }
+</script>
+</body>
+</html>
